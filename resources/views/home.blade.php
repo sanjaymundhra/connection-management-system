@@ -19,5 +19,28 @@
             </div>
         </div>
     </div>
+    @if($users)
+        <div class="row">
+            <h3>All Users</h3>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($users as $key=>$user)                    
+                        <tr>
+                            <td>{{ $user->name}}</td>
+                            <td>{{ $user->email}}</td>
+                            <td><button class='btn'>send friend Request</button></td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    @endif
 </div>
 @endsection
