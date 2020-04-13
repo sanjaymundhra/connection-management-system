@@ -40,6 +40,39 @@
                         </div>
 
                         <div class="form-group row">
+                            <label for="gender" class="col-md-4 col-form-label text-md-right">{{ __('Gender') }}</label>
+                            <div class="col-md-6">
+                                <input id="male" type="radio" class="@error('gender') is-invalid @enderror" name="gender" value="male" {{ old('gender')=='male'?'checked':'' }} required >
+                                <label for="male">Male</label><br>
+                                <input id="female" type="radio" class="@error('gender') is-invalid @enderror" name="gender" value="female" {{ old('gender')=='female'?'checked':'' }} required >
+                                <label for="female">Female</label><br>
+                                @error('gender')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                        @if($hobbies)
+                        <div class="form-group row">
+                            <label for="hobby" class="col-md-4 col-form-label text-md-right">{{ __('Hobby') }}</label>
+
+                            <div class="col-md-6">
+                                @foreach ($hobbies as $key=>$hobby) 
+                                    <label class="form-check-inline">
+                                        <input type="checkbox" class="form-check-input @error('hobbies') is-invalid @enderror" name="hobbies[]" value="{{$key}}" {{(is_array(old('hobbies')) && in_array($key, old('hobbies')))?'checked':''}} >{{ $hobby }}
+                                    </label>                                               
+                                @endforeach
+
+                                @error('email')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                        @endif
+                        <div class="form-group row">
                             <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
 
                             <div class="col-md-6">

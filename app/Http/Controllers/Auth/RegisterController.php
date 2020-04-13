@@ -8,6 +8,8 @@ use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use App\Hobby;
+use DB;
 
 class RegisterController extends Controller
 {
@@ -52,6 +54,7 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'gender' => ['required'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
     }
@@ -64,10 +67,29 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
+            'gender' => $data['gender'],
             'password' => Hash::make($data['password']),
         ]);
+
+        //insert hobbies in hobby_user table
+        if(isset($data['hobbies'])){
+            foreach($data['hobbies'] as $hobby_id){
+                $hobby_user[] = ['hobby_id'=>$hobby_id,'user_id'=>$user->id];
+            }
+            DB::table('hobby_user')->insert($hobby_user);
+        }
+        
+        return $user;
+
+    }
+
+    //copied this method from RegistersUsers trait to override as per our requirement
+    public function showRegistrationForm()
+    {
+        $hobbies = Hobby::all()->pluck('name','id');
+        return view('auth.register',compact('hobbies'));
     }
 }
