@@ -20,3 +20,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::prefix('friend_request')->group(function () {
+    Route::post('send', 'FriendRequestController@send')->name('request.send');
+});
