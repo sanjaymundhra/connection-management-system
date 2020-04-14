@@ -35,7 +35,7 @@
                         <tr>
                             <td>{{ $user->name}}</td>
                             <td>{{ $user->email}}</td>
-                            <td><button class='btn'>send friend Request</button></td>
+                            <td><button user-id="{{$user->id}}" class='btn send_friend_request'>Send Friend Request</button></td>
                         </tr>
                     @endforeach
                 </tbody>
