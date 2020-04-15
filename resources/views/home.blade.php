@@ -35,7 +35,10 @@
                     <tr>
                     <th scope="col">Name</th>
                     <th scope="col">Email</th>
+                    <th scope="col">Gender</th>
+                    <th scope="col">Hobbies</th>
                     <th scope="col">Action</th>
+                    <th scope="col">Block/Blocked</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -44,6 +47,8 @@
                             <tr>
                                 <td>{{ $user->name}}</td>
                                 <td>{{ $user->email}}</td>
+                                <td>{{ $user->gender}}</td>
+                                <td>{{ $user->hobbies?$user->hobbies->implode('name', ', '):''}}</td>
                                 @php
                                     $req_status = $user->friend_request_status();
                                 @endphp
