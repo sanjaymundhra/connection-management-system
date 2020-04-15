@@ -1,0 +1,9 @@
+.request-sent,.request-recieved,.request-accepted{
+    color: green;
+}
+.block{
+    color:gray;
+}
+.blocked{
+    color:red;
+}

@@ -31,12 +31,36 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($users as $key=>$user)                    
-                        <tr>
-                            <td>{{ $user->name}}</td>
-                            <td>{{ $user->email}}</td>
-                            <td><button user-id="{{$user->id}}" class='btn send_friend_request'>Send Friend Request</button></td>
-                        </tr>
+                    @foreach ($users as $key=>$user)
+                        @if($user->has_blocked()!=2)                 
+                            <tr>
+                                <td>{{ $user->name}}</td>
+                                <td>{{ $user->email}}</td>
+                                @php
+                                    $req_status = $user->friend_request_status();
+                                @endphp
+                                @if($req_status['req']=='sent')
+                                    @if($req_status['status']==0)
+                                        <td><span user-id="{{$user->id}}" class='request-sent'>Request Sent</span></td>
+                                    @elseif($req_status['status']==1)
+                                        <td><span user-id="{{$user->id}}" class='request-accepted'>Your Friend</span></td>
+                                    @endif
+                                @elseif($req_status['req']=='received')
+                                    @if($req_status['status']==0)
+                                        <td><button user-id="{{$user->id}}" class='btn request-recieved'>Accept</button></td>
+                                    @elseif($req_status['status']==1)
+                                        <td><span user-id="{{$user->id}}" class='request-accepted'>Your Friend</span></td>
+                                    @endif
+                                @else
+                                    <td><button user-id="{{$user->id}}" class='btn send_friend_request'>Send Friend Request</button></td>
+                                @endif
+                                @if($user->is_blocked()==2)
+                                    <td><button user-id="{{$user->id}}" class='btn blocked'>Blocked</button></td>
+                                @else
+                                    <td><button user-id="{{$user->id}}" class='btn block'>Block</button></td>
+                                @endif
+                            </tr>
+                        @endif
                     @endforeach
                 </tbody>
             </table>

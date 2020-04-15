@@ -23,4 +23,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::prefix('friend_request')->group(function () {
     Route::post('send', 'FriendRequestController@send')->name('request.send');
+    Route::post('accept', 'FriendRequestController@accept')->name('request.accept');
+    Route::post('block', 'FriendRequestController@block')->name('request.block');
 });
