@@ -2,24 +2,32 @@
 
 @section('content')
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">Dashboard</div>
-
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-                    You are logged in!
-                </div>
-            </div>
-        </div>
-    </div>
     @if($users)
+        <div class='row'>
+            <form action="{{route('filtered.users')}}" method='GET' class='form-inline'>
+                @csrf
+                <div class='form-group'>
+                    <label class="control-label" for="filter_gender">Gender</label>
+                    <select name="filter_gender" id="filter_gender" class='form-control'>
+                        <option value=''>All</option>
+                        <option value="male" {{Request::get('filter_gender')=='male'?'selected':''}}>Male</option>
+                        <option value="female" {{Request::get('filter_gender')=='female'?'selected':''}}>Female</option>
+                    </select>
+                </div>
+                @if($hobbies)
+                    <div class='form-group'>
+                        <label class="control-label" for="filter_hobby">Hobbies</label>
+                        <select name="filter_hobby" id="filter_hobby" class='form-control'>
+                            <option value=''>All</option>
+                            @foreach ($hobbies as $hobby)                                
+                                <option value="{{$hobby->name}}" {{Request::get('filter_hobby')==$hobby->name?'selected':''}}>{{$hobby->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                @endif
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
         <div class="row">
             <h3>All Users</h3>
             <table class="table table-striped">
