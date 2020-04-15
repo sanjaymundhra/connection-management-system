@@ -3,7 +3,7 @@
 namespace App\Observers;
 
 use App\FriendRequest;
-use App\LogUserAction;
+use App\Jobs\LogUserActionQueue;
 
 class UserActionObserver
 {
@@ -21,7 +21,9 @@ class UserActionObserver
             'created_for' => $friendRequest->user_two_id,
             'action' => $this->action[$friendRequest->status]
         ];
-        LogUserAction::create($log);
+        $job = new LogUserActionQueue($log);        
+        dispatch($job);
+       
     }
 
     /**
@@ -37,7 +39,8 @@ class UserActionObserver
             'created_for' => $friendRequest->user_two_id,
             'action' => $this->action[$friendRequest->status]
         ];
-        LogUserAction::create($log);
+        $job = new LogUserActionQueue($log);        
+        dispatch($job);
     }
 
     /**

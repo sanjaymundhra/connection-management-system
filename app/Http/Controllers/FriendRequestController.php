@@ -89,9 +89,9 @@ class FriendRequestController extends Controller
                         ['status' => 2,'action_by' => $user_one,'updated_at'=>now()]
                     );
                 if(!$block){
-                    $block = FriendRequest::create([
+                    $block = FriendRequest::create(
                         ['user_one_id' => $user_one, 'user_two_id' => $user_two,'status' => 2,'action_by' => $user_one,'created_at'=>now(),'updated_at'=>now()  ]
-                    ]);
+                    );
                 }
                 if($block)
                     return response()->json( 'ok', 200 );
