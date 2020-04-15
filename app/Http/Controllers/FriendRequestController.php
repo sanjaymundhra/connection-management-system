@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use DB;
+use App\FriendRequest;
 
 class FriendRequestController extends Controller
 {
@@ -30,9 +31,9 @@ class FriendRequestController extends Controller
             $user_two = $request->user_two;
             $user_exists = User::find($user_two);
             if($user_exists && $user_one!=$user_two ){
-                $req_sent = DB::table('friend_request')->insert([
+                $req_sent = FriendRequest::create(
                     ['user_one_id' => $user_one, 'user_two_id' => $user_two,'status' => 0,'action_by' => $user_one,'created_at'=>now(),'updated_at'=>now()  ]
-                ]);
+                );
                 if($req_sent){
                     return response()->json( 'ok', 200 );
                 }
@@ -56,8 +57,7 @@ class FriendRequestController extends Controller
             $user_one = $request->user_one;
             $user_exists = User::find($user_one);
             if($user_exists && $user_one!=$user_two ){
-                $req_received= DB::table('friend_request')
-                    ->where(['user_one_id' => $user_one, 'user_two_id' => $user_two,'status' => 0])
+                $req_received= FriendRequest::where(['user_one_id' => $user_one, 'user_two_id' => $user_two,'status' => 0])
                     ->update([
                         'status' => 1 ,'action_by' => $user_two,'updated_at'=>now()
                     ]);
@@ -83,14 +83,13 @@ class FriendRequestController extends Controller
             $user_two = $request->user_two;
             $user_exists = User::find($user_two);
             if($user_exists && $user_one!=$user_two ){
-                $block = DB::table('friend_request')
-                    ->where(['user_one_id' => $user_one, 'user_two_id' => $user_two])
+                $block = FriendRequest::where(['user_one_id' => $user_one, 'user_two_id' => $user_two])
                     ->orWhere(['user_one_id' => $user_two, 'user_two_id' => $user_one])
                     ->update(
                         ['status' => 2,'action_by' => $user_one,'updated_at'=>now()]
                     );
                 if(!$block){
-                    $block = DB::table('friend_request')->insert([
+                    $block = FriendRequest::create([
                         ['user_one_id' => $user_one, 'user_two_id' => $user_two,'status' => 2,'action_by' => $user_one,'created_at'=>now(),'updated_at'=>now()  ]
                     ]);
                 }
