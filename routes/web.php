@@ -27,3 +27,5 @@ Route::prefix('friend_request')->group(function () {
     Route::post('accept', 'FriendRequestController@accept')->name('request.accept');
     Route::post('block', 'FriendRequestController@block')->name('request.block');
 });
+
+Route::get('/history', 'LogUserActionController@index')->name('history');
